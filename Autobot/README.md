@@ -13,7 +13,8 @@ Automação para interação com o sistema SEI (Sistema Eletrônico de Informaç
 - Anexação de arquivos PDF automaticamente a partir de um diretório selecionado.
 
 - Interface gráfica simples, desenvolvida com PyQt5, para facilitar o uso.
-![alt text](image.png)
+<img src="image.png" alt="alt text" width="350">
+
 - Suporte a tratamento de erros com mensagens para o usuário.
 
 - Arquivo .exe gerado para uso direto no Windows, dispensando configuração do ambiente Python para o usuário final.
