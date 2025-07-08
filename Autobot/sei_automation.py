@@ -97,7 +97,7 @@ class MainWindow(QMainWindow):
         )
         btn_select = QPushButton("Selecionar")
         btn_select.setStyleSheet(
-            "background-color: #f7a833; color: white; border-radius: 5px; padding: 6px;"
+            "background-color: #f7a833; color: black; border-radius: 5px; padding: 6px;"
         )
         btn_select.clicked.connect(lambda: self.select_directory(diretorio_input))
         hbox.addWidget(diretorio_input)
