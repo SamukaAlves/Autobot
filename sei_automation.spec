@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['C:\\Users\\samuel.alves\\Documents\\Autobot\\Autobot\\sei_automation.py'],
+    ['C:\\Users\\samuel.alves\\OneDrive - Funpresp-Jud\\Documentos\\Autobot\\Autobot\\sei_automation.py'],
     pathex=[],
     binaries=[],
     datas=[],
