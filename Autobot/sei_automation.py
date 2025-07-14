@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import (
     QHBoxLayout,
     QFileDialog,
     QCheckBox,
+    QLabel,
 )
 from selenium_handler import SEIAutomation
 from PyQt5.QtGui import QIcon
@@ -21,8 +22,9 @@ from dotenv import load_dotenv, set_key
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Automação SEI Funpresp-Jud")
-        self.setGeometry(100, 100, 400, 250)
+        self.setWindowTitle("Autobot")
+        self.setGeometry(100, 100, 500, 400)  # Largura e altura
+        self.setFixedSize(500, 400)  # Tamanho fixo
         self.setWindowIcon(QIcon("icon.ico"))
         self.setStyleSheet("background-color: #dfdfdf;")
 
@@ -32,17 +34,67 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
         layout = QVBoxLayout(central_widget)
 
-        self.usuario_input = self._create_input_field("Usuário")
-        self.senha_input = self._create_input_field("Senha", is_password=True)
-        self.diretorio_input, diretorio_layout = self._create_directory_input()
+        # Título
+        titulo = QLabel("Automação SEI - Funpresp-jud")
+        titulo.setStyleSheet(
+            """
+            font-size: 24px;
+            font-family: Arial;
+            font-weight: bold;
+            color: #333333;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            """
+        )
+        titulo.setAlignment(Qt.AlignLeft)
+        layout.addWidget(titulo)
 
+        # Subtítulo
+        subtitulo = QLabel(
+            "Insira o usuário, senha e selecione a pasta com os arquivos a serem processados. "
+            "Depois, execute a automação para anexar os comprovantes aos seus respectivos processos do SEI."
+        )
+        subtitulo.setStyleSheet(
+            """
+            font-size: 13px;
+            font-family: Arial;
+            color: #555555;
+            line-height: 1.2em;
+            margin-bottom: 15px;
+            """
+        )
+        subtitulo.setWordWrap(True)
+        subtitulo.setAlignment(Qt.AlignLeft)
+        layout.addWidget(subtitulo)
+
+        layout.addSpacing(5)
+
+        # Campos de entrada
+        self.usuario_input = self._create_input_field("Usuário")
         layout.addWidget(self.usuario_input)
+        layout.addSpacing(5)
+
+        self.senha_input = self._create_input_field("Senha", is_password=True)
         layout.addWidget(self.senha_input)
+        layout.addSpacing(10)
+
+        self.checkbox_salvar = QCheckBox("Lembrar usuário e senha")
+        layout.addWidget(self.checkbox_salvar)
+        layout.addSpacing(15)
+
+        # Campo de diretório
+        label_diretorio = QLabel("Selecione o pasta do arquivo:")
+        label_diretorio.setStyleSheet(
+            "font-size: 13px; font-family: Arial; color: #333333;"
+        )
+        layout.addWidget(label_diretorio)
+
+        self.diretorio_input, diretorio_layout = self._create_directory_input()
         layout.addLayout(diretorio_layout)
 
-        self.checkbox_salvar = QCheckBox("Salvar login")
-        layout.addWidget(self.checkbox_salvar)
+        layout.addSpacing(25)
 
+        # Botão Executar centralizado
         self.btn_executar = QPushButton("Executar")
         self.btn_executar.setStyleSheet(
             "background-color: #0e509a; color: white; border-radius: 5px; padding: 4px;"
@@ -69,39 +121,44 @@ class MainWindow(QMainWindow):
     def _create_input_field(self, placeholder, is_password=False):
         input_field = QLineEdit()
         input_field.setPlaceholderText(placeholder)
-        if is_password:
-            input_field.setEchoMode(QLineEdit.Password)
+        input_field.setFixedHeight(35)
         input_field.setStyleSheet(
             """
             background-color: #ffffff; 
             color: black; 
             border-radius: 5px; 
             padding: 6px;
+            font-size: 13px;
             QLineEdit::placeholderText { color: #555555; } 
             """
         )
+        if is_password:
+            input_field.setEchoMode(QLineEdit.Password)
         return input_field
 
     def _create_directory_input(self):
         hbox = QHBoxLayout()
         diretorio_input = QLineEdit()
-        diretorio_input.setPlaceholderText("Diretório dos arquivos")
+        diretorio_input.setPlaceholderText("C://Pasta1/Pasta2/documento1...")
+        diretorio_input.setFixedHeight(35)
         diretorio_input.setStyleSheet(
             """
             background-color: #ffffff; 
             color: black; 
             border-radius: 5px; 
             padding: 6px;
+            font-size: 13px;
             QLineEdit::placeholderText { color: #555555; } 
             """
         )
         btn_select = QPushButton("Selecionar")
+        btn_select.setFixedHeight(35)
         btn_select.setStyleSheet(
             "background-color: #f7a833; color: black; border-radius: 5px; padding: 6px;"
         )
         btn_select.clicked.connect(lambda: self.select_directory(diretorio_input))
-        hbox.addWidget(diretorio_input)
-        hbox.addWidget(btn_select)
+        hbox.addWidget(diretorio_input, 3)
+        hbox.addWidget(btn_select, 1)
         return diretorio_input, hbox
 
     def select_directory(self, input_field):
